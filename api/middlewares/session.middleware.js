@@ -20,6 +20,7 @@ module.exports.checkSession = (req, res, next) => {
               session.save();
 
               // leave user on req object so next middlewares can access to it
+              req.session = session;
               req.user = user;
 
               // continue to next middleware or controller

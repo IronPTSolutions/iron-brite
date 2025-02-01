@@ -14,8 +14,10 @@ router.delete("/events/:id", auth.checkSession, events.delete);
 router.patch("/events/:id", auth.checkSession, events.update);
 
 router.post("/users", users.create);
+router.patch("/users", auth.checkSession, users.update);
 
 router.post("/sessions", sessions.create);
+router.delete("/sessions", auth.checkSession, sessions.destroy);
 
 router.use((req, res, next) => {
   next(createError(404, "Route not found"));
