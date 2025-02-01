@@ -9,7 +9,13 @@ module.exports.list = (req, res, next) => {
 
 module.exports.create = (req, res, next) => {
   const { body } = req;
-  Event.create(body)
+
+  Event.create({
+    title: body.title,
+    description: body.description,
+    startDate: body.startDate,
+    endDate: body.endDate,
+  })
     .then((event) => res.status(201).json(event))
     .catch((error) => next(error));
 };
@@ -37,6 +43,12 @@ module.exports.delete = (req, res, next) => {
 module.exports.update = (req, res, next) => {
   const { id } = req.params;
   const { body } = req;
+
+  const permittedParams = ["title", "description", "startDate", "endDate"];
+
+  Object.keys(body).forEach((key) => {
+    if (!permittedParams.includes(key)) delete body[key];
+  });
 
   Event.findByIdAndUpdate(id, body, { runValidators: true, new: true })
     .then((event) => {

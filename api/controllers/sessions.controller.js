@@ -12,6 +12,11 @@ module.exports.create = (req, res, next) => {
           .checkPassword(password)
           .then((match) => {
             if (match) {
+              if (!user.active) {
+                next(createError(401, "user not active"));
+                return;
+              }
+
               // create session key and send it to the user via set-cookie header
               Session.create({ user: user.id })
                 .then((session) => {

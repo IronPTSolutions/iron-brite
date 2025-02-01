@@ -15,6 +15,7 @@ router.patch("/events/:id", auth.checkSession, events.update);
 
 router.post("/users", users.create);
 router.patch("/users", auth.checkSession, users.update);
+router.get("/users/:id/validate", users.validate);
 
 router.post("/sessions", sessions.create);
 router.delete("/sessions", auth.checkSession, sessions.destroy);

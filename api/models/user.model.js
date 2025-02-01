@@ -27,6 +27,20 @@ const userSchema = new mongoose.Schema(
       required: [true, "User password is required"],
       match: [PASSWORD_PATTERN, "Invalid user password pattern"],
     },
+    active: {
+      type: Boolean,
+      default: false,
+    },
+    activateToken: {
+      type: String,
+      default: function () {
+        return (
+          Math.random().toString(36).substring(2, 15) +
+          Math.random().toString(36).substring(2, 15) +
+          Math.random().toString(36).substring(2, 15)
+        );
+      },
+    },
     avatar: {
       type: String,
       default: function () {
@@ -54,6 +68,8 @@ const userSchema = new mongoose.Schema(
         delete ret.__v;
         delete ret._id;
         delete ret.password;
+        delete ret.activateToken;
+
         ret.id = doc.id;
         return ret;
       },
