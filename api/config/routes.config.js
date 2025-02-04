@@ -13,8 +13,16 @@ router.get("/events/:id", auth.checkSession, events.detail);
 router.delete("/events/:id", auth.checkSession, events.delete);
 router.patch("/events/:id", auth.checkSession, events.update);
 
+router.post("/events/:id/comments", auth.checkSession, events.createComment);
+router.get(
+  "/events/:id/comments/:commentId",
+  auth.checkSession,
+  events.detailComment
+);
+
 router.post("/users", users.create);
 router.patch("/users", auth.checkSession, users.update);
+router.get("/users/me", auth.checkSession, users.profile);
 router.get("/users/:id/validate", users.validate);
 
 router.post("/sessions", sessions.create);
