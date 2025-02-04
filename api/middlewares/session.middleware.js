@@ -1,4 +1,3 @@
-const User = require("../models/user.model");
 const Session = require("../models/session.model");
 const createError = require("http-errors");
 
@@ -10,7 +9,7 @@ module.exports.checkSession = (req, res, next) => {
     ?.split("=")?.[1];
 
   if (!sessionId) {
-    next(createError(401, "missing session from authorization header"));
+    next(createError(401, "missing session from cookie header"));
   }
 
   Session.findById(sessionId)

@@ -22,7 +22,8 @@ module.exports.create = (req, res, next) => {
                 .then((session) => {
                   res.setHeader(
                     "Set-Cookie",
-                    `session=${session.id}; HttpOnly; Secure`
+                    `session=${session.id}; HttpOnly;` // HttpOnly is a flag that prevents JavaScript from accessing the cookie
+                    // Secure is a flag that prevents the cookie from being sent over an unencrypted connection
                   );
 
                   res.json(user);
