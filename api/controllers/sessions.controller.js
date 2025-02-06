@@ -42,8 +42,7 @@ module.exports.create = (req, res, next) => {
 };
 
 module.exports.destroy = (req, res, next) => {
-  req.session
-    .remove()
+  Session.findByIdAndRemove(req.session.id)
     .then(() => res.status(204).send())
     .catch(next);
 };
