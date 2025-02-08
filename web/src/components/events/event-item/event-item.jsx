@@ -12,7 +12,7 @@ function EventItem({ event, onDelete }) {
         <p className='mb-0 fs-xs'><strong>{dayjs(event.eventDate).format('lll')}</strong></p>
         <p className="text-muted fw-lighter fs-xs">{event.location}</p>
         <div className="d-flex gap-1 flex-wrap mb-1">
-          {event.categories.map((category) => (
+          {event.categories?.map((category) => (
             <span key={category} className='badge text-bg-light'>{category}</span>
           ))}
         </div>

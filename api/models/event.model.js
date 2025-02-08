@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const dayjs = require("../config/dayjs.config");
+const { isURL } = require('../validators/string.validators');
 const { events } = require("./user.model");
 
 const eventSchema = new mongoose.Schema(
@@ -42,6 +43,16 @@ const eventSchema = new mongoose.Schema(
         },
       },
     },
+    poster: {
+      type: String,
+      default: 'https://picsum.photos/seed/a07c034d-47f4-4a86-97d6-80f8a57f3960/800/600',
+      validate: {
+        validator: isURL,
+        message: function () {
+          return "Invalid poster URL";
+        }
+      }
+    }
   },
   {
     timestamps: true,

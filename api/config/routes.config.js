@@ -7,26 +7,26 @@ const users = require("../controllers/users.controller");
 const sessions = require("../controllers/sessions.controller");
 const auth = require("../middlewares/session.middleware");
 
-router.get("/events", auth.checkSession, events.list);
-router.post("/events", auth.checkSession, events.create);
-router.get("/events/:id", auth.checkSession, events.detail);
-router.delete("/events/:id", auth.checkSession, events.delete);
-router.patch("/events/:id", auth.checkSession, events.update);
+router.get("/events", events.list);
+router.post("/events", auth.isAuthenticated, auth.isAdmin, events.create);
+router.get("/events/:id", events.detail);
+router.delete("/events/:id", auth.isAuthenticated, auth.isAdmin, events.delete);
+router.patch("/events/:id", auth.isAuthenticated, auth.isAdmin, events.update);
 
-router.post("/events/:id/comments", auth.checkSession, events.createComment);
+router.post("/events/:id/comments", auth.isAuthenticated, events.createComment);
 router.get(
   "/events/:id/comments/:commentId",
-  auth.checkSession,
+  auth.isAuthenticated,
   events.detailComment
 );
 
 router.post("/users", users.create);
-router.patch("/users", auth.checkSession, users.update);
-router.get("/users/me", auth.checkSession, users.profile);
+router.patch("/users/me", auth.isAuthenticated, users.update);
+router.get("/users/me", auth.isAuthenticated, users.profile);
 router.get("/users/:id/validate", users.validate);
 
 router.post("/sessions", sessions.create);
-router.delete("/sessions", auth.checkSession, sessions.destroy);
+router.delete("/sessions", auth.isAuthenticated, sessions.destroy);
 
 router.use((req, res, next) => {
   next(createError(404, "Route not found"));

@@ -14,9 +14,11 @@ function Navbar() {
               <Link className="nav-link active" aria-current="page" to="/">Home</Link>
             </li>
           </ul>
-          <span className="navbar-text">
-            Unforgettable Moments, One Event at a Time!
-          </span>
+          <ul className='navbar-nav'>
+            <li className="nav-item">
+              <Link className="nav-link" aria-current="page" to="/login">Login</Link>
+            </li>
+          </ul>
         </div>
       </div>
     </nav>

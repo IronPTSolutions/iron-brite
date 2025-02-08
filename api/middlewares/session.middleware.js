@@ -1,38 +1,34 @@
-const Session = require("../models/session.model");
 const createError = require("http-errors");
+const User = require("../models/user.model");
 
-module.exports.checkSession = (req, res, next) => {
-  // find session id from cookie. imagine cookie is "session=1234; other=5678"
-  const sessionId = req.headers.cookie
-    ?.split(";")
-    ?.find((cookie) => cookie.includes("session="))
-    ?.split("=")?.[1];
-
-  if (!sessionId) {
-    next(createError(401, "missing session from cookie header"));
+module.exports.loadSessionUser = (req, res, next) => {
+  const { userId } = req.session;
+  if (!userId) {
+    req.user = undefined;
+    next();
+  } else {
+    User.findById(userId)
+      .then((user) => {
+        req.user = user;
+        next();
+      })
+      .catch((error) => next(error));
   }
+}
 
-  Session.findById(sessionId)
-    .populate("user") // populate user field. thanks to user ref in session model
-    .then((session) => {
-      if (session) {
-        if (session.user) {
-          // update last access time to keep session alive
-          session.lastAccess = new Date();
-          session.save();
+module.exports.isAuthenticated = (req, res, next) => {
+  if (req.user) {
+    next(); 
+  } else {
+    next(createError(401, 'Unauthorized, missing credentials'));
+  }
+}
 
-          // leave user on req object so next middlewares can access to it
-          req.session = session;
-          req.user = session.user;
+module.exports.isAdmin = (req, res, next) => {
+  if (req.user.role === 'admin') {
+    next();
+  } else {
+    next(createError(403, 'Forbidden, insufficient access level'));
+  }
+}
 
-          // continue to next middleware or controller
-          next();
-        } else {
-          next(createError(401, "unauthorized. wrong user"));
-        }
-      } else {
-        next(createError(401, "unauthorized. session not found"));
-      }
-    })
-    .catch(next);
-};

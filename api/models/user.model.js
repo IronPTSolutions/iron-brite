@@ -1,10 +1,15 @@
 const mongoose = require("mongoose");
+const { isURL } = require('../validators/string.validators');
 const bcrypt = require("bcryptjs");
 
 const SALT_WORK_FACTOR = 10;
 const EMAIL_PATTERN =
   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const PASSWORD_PATTERN = /^.{8,}$/;
+
+const ADMIN_EMAILS = (process.env.ADMIN_EMAILS || '')
+  .split(',')
+  .map((email) => email.trim().toLowerCase());
 
 const userSchema = new mongoose.Schema(
   {
@@ -47,19 +52,17 @@ const userSchema = new mongoose.Schema(
         return `https://i.pravatar.cc/350?u=${this.email}`;
       },
       validate: {
-        validator: function (avatar) {
-          try {
-            new URL(avatar);
-            return true;
-          } catch (e) {
-            return false;
-          }
-        },
+        validator: isURL,
         message: function () {
           return "Invalid avatar URL";
         },
       },
     },
+    role: {
+      type: String,
+      enum: ['admin', 'guess'],
+      default: 'guess'
+    }
   },
   {
     timestamps: true,
@@ -78,6 +81,11 @@ const userSchema = new mongoose.Schema(
 );
 
 userSchema.pre("save", function (next) {
+
+  if (ADMIN_EMAILS.includes(this.email)) {
+    this.role = 'admin';
+  }
+
   if (this.isModified("password")) {
     bcrypt
       .hash(this.password, SALT_WORK_FACTOR)
