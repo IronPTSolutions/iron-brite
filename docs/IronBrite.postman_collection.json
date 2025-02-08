@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "a1918e05-2e8b-43f0-9085-4a189020ac47",
+		"_postman_id": "11e36b01-9ba0-4fd7-9327-92b189e2ca44",
 		"name": "IronBrite",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "1194541"
+		"_exporter_id": "30620625"
 	},
 	"item": [
 		{
@@ -128,6 +128,154 @@
 									"key": "id",
 									"value": "6794cd8fd699fd187272b373"
 								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"julio@example.com\",\n    \"password\": \"12345678\",\n    \"name\": \"Julio\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_API_URL}}/users",
+							"host": [
+								"{{BASE_API_URL}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"julio@example.com\",\n    \"password\": \"12345678\",\n    \"name\": \"Julio\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_API_URL}}/users/me",
+							"host": [
+								"{{BASE_API_URL}}"
+							],
+							"path": [
+								"users",
+								"me"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Sessions",
+			"item": [
+				{
+					"name": "Session",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_API_URL}}/sessions",
+							"host": [
+								"{{BASE_API_URL}}"
+							],
+							"path": [
+								"sessions"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Comments",
+			"item": [
+				{
+					"name": "Comment",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"text\": \"que chulo el concierto\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_API_URL}}/events/67a277364b6bf45dcb3530f0/comments",
+							"host": [
+								"{{BASE_API_URL}}"
+							],
+							"path": [
+								"events",
+								"67a277364b6bf45dcb3530f0",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Comment",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"text\": \"que chulo el concierto\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_API_URL}}/events/67a277364b6bf45dcb3530f0/comments/67a2774f4b6bf45dcb3530f9",
+							"host": [
+								"{{BASE_API_URL}}"
+							],
+							"path": [
+								"events",
+								"67a277364b6bf45dcb3530f0",
+								"comments",
+								"67a2774f4b6bf45dcb3530f9"
 							]
 						}
 					},
