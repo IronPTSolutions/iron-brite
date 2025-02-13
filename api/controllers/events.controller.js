@@ -3,7 +3,23 @@ const Event = require("../models/event.model");
 const Comment = require("../models/comment.model");
 
 module.exports.list = (req, res, next) => {
-  Event.find()
+  const { limit = 5, page = 0, sort = 'startDate', city, title } = req.query;
+
+  if (Number.isNaN(Number(limit)) || Number(limit) <= 0) {
+    return next(createError(400, { message: 'Invalid query parameter', errors: { limit: 'Must be >= 0' }}));
+  }
+  if (Number.isNaN(Number(page)) || Number(page) < 0) {
+    return next(createError(400, { message: 'Invalid query parameter', errors: { page: 'Must be >= 0' } }));
+  }
+
+  const criterial = {};
+  if (city) criterial.city = city;
+  if (title) criterial.title = new RegExp(title, 'i');
+
+  Event.find(criterial)
+    .sort({ [sort]: 'desc' })
+    .limit(limit)
+    .skip(limit * page)
     .populate("comments") // populate comments. thanks to Event virtual "comment" field
     .then((events) => res.json(events))
     .catch((error) => next(error));

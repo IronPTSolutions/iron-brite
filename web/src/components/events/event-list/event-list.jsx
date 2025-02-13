@@ -2,16 +2,16 @@ import { useEffect, useState } from "react";
 import EventItem from "../event-item/event-item";
 import * as IronBriteApi from '../../../services/api-service';
 
-function EventList({ className = '', city, max }) {
+function EventList({ className = '', city, max, page }) {
   const [events, setEvents] = useState([]);
   const [reload, setReload] = useState(false);
 
   useEffect(() => {
     console.log(`RELOADING... ${{ city, max }}`);
-    IronBriteApi.listEvents({ city, limit: max })
+    IronBriteApi.listEvents({ city, limit: max, page })
       .then((events) => setEvents(events))
       .catch((error) => console.error(error))
-  }, [city, max, reload]);
+  }, [city, max, reload, page]);
 
   const handleEventDeletion = (event) => {+
     IronBriteApi.deleteEvent(event.id)

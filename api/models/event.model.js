@@ -43,6 +43,9 @@ const eventSchema = new mongoose.Schema(
         },
       },
     },
+    city: {
+      type: String
+    },
     poster: {
       type: String,
       default: 'https://picsum.photos/seed/a07c034d-47f4-4a86-97d6-80f8a57f3960/800/600',

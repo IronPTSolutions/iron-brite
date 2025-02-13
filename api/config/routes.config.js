@@ -7,7 +7,7 @@ const users = require("../controllers/users.controller");
 const sessions = require("../controllers/sessions.controller");
 const auth = require("../middlewares/session.middleware");
 
-router.get("/events", events.list);
+router.get("/events", auth.isAuthenticated, events.list);
 router.post("/events", auth.isAuthenticated, auth.isAdmin, events.create);
 router.get("/events/:id", events.detail);
 router.delete("/events/:id", auth.isAuthenticated, auth.isAdmin, events.delete);
