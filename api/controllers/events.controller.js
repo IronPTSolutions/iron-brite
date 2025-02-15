@@ -3,7 +3,15 @@ const Event = require("../models/event.model");
 const Comment = require("../models/comment.model");
 
 module.exports.list = (req, res, next) => {
-  const { limit = 5, page = 0, sort = 'startDate', city, title } = req.query;
+  const { limit = 5, 
+    page = 0, 
+    sort = 'startDate', 
+    city, 
+    title,
+    radius = 5000,
+    lat,
+    lng
+   } = req.query;
 
   if (Number.isNaN(Number(limit)) || Number(limit) <= 0) {
     return next(createError(400, { message: 'Invalid query parameter', errors: { limit: 'Must be >= 0' }}));
@@ -13,8 +21,26 @@ module.exports.list = (req, res, next) => {
   }
 
   const criterial = {};
-  if (city) criterial.city = city;
+  if (city) criterial['address.city'] = city;
   if (title) criterial.title = new RegExp(title, 'i');
+  if (lat && lng) {
+    if (Number.isNaN(Number(lat)) || !(Number(lat) >= -90 && Number(lat) <= 90)) {
+      return next(createError(400, { message: 'Invalid lat parameter', errors: { lat: 'Must be -90 >= lat <= 90' } }));
+    }
+    if (Number.isNaN(Number(lng)) || !(Number(lng) >= -180 && Number(lng) <= 180)) {
+      return next(createError(400, { message: 'Invalid lat parameter', errors: { lng: 'Must be -180 >= lat <= 180' } }));
+    }
+    criterial['address.location'] = {
+      $near: {
+        $geometry: {
+          type: 'Point',
+          coordinates: [Number(lng), Number(lat)]
+       },
+      $maxDistance: Number(radius),
+      $minDistance: 0
+     }
+    }
+  }
 
   Event.find(criterial)
     .sort({ [sort]: 'desc' })
@@ -26,14 +52,17 @@ module.exports.list = (req, res, next) => {
 };
 
 module.exports.create = (req, res, next) => {
-  const { body } = req;
+  const event = req.body;
 
-  Event.create({
-    title: body.title,
-    description: body.description,
-    startDate: body.startDate,
-    endDate: body.endDate,
-  })
+  if (event.address?.location) {
+    const { lat, lng } = event.address.location || {};
+    event.address.location = {
+      type: 'Point',
+      coordinates: [lng, lat]
+    }
+  }
+
+  Event.create(event)
     .then((event) => res.status(201).json(event))
     .catch((error) => next(error));
 };

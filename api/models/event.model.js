@@ -17,7 +17,7 @@ const eventSchema = new mongoose.Schema(
       required: [true, "Description is required"],
       trim: true,
       minLength: [10, "Description needs at least 3 characters"],
-      maxLength: [700, "Description characters must be lower than 100"],
+      maxLength: [7000, "Description characters must be lower than 7000"],
     },
     startDate: {
       type: Date,
@@ -43,9 +43,33 @@ const eventSchema = new mongoose.Schema(
         },
       },
     },
-    city: {
-      type: String
+    address: {
+      type: {
+        _id: false,
+        city: {
+          type: String,
+          lowercase: true,
+          required: [true, "City is required giving an address"],
+        },
+        street: {
+          type: String,
+          required: [true, "Street is required giving an address"],
+        },
+        location: {
+          type: {
+            type: String,
+            enum: ['Point'],
+            required: true
+          },
+          coordinates: {
+            type: [Number],
+            required: true
+          }
+        }
+      },
+      required: false
     },
+    categories: [String],
     poster: {
       type: String,
       default: 'https://picsum.photos/seed/a07c034d-47f4-4a86-97d6-80f8a57f3960/800/600',
@@ -65,11 +89,18 @@ const eventSchema = new mongoose.Schema(
         delete ret.__v;
         delete ret._id;
         ret.id = doc.id;
+        if (ret.address) {
+          const [lng, lat] = ret.address.location.coordinates;
+          ret.address.location = { lat, lng }
+        }
         return ret;
       },
     },
   }
 );
+
+eventSchema.index({ 'address.location': '2dsphere' });
+
 
 // Virtual property to get comments from a event. Loading Comment.find({ event: event._id }) automatically
 eventSchema.virtual("comments", {

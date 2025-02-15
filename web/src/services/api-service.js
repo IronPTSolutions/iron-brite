@@ -20,12 +20,14 @@ http.interceptors.response.use(
 
 const login = (user) => http.post('/sessions', user)
 
-const listEvents = ({ city, limit, page }) => {
-
+const listEvents = ({ city, limit, page, lat, lng }) => {
   limit = Number.isNaN(Number(limit)) || Number(limit) <= 0 ? 1 : limit;
   page = Number.isNaN(Number(page)) || Number(page) <= 0 ? undefined : page;
 
-  return http.get('/events', { params: { city, limit, page }})
+  lat = Number.isNaN(Number(lat)) || !(Number(lat) >= -90 && Number(lat) <= 90) ? undefined : lat;
+  lng = Number.isNaN(Number(lng)) || !(Number(lng) >= -180 && Number(lng) <= 180) ? undefined : lng;
+
+  return http.get('/events', { params: { city, limit, page, lat, lng }})
 }
 
 const getEvent = (id) => http.get(`/events/${id}`);
