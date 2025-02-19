@@ -10,7 +10,7 @@ function HomePage() {
       <h3 className="fw-light">What's on in Barcelona</h3>
       <EventList city="Barcelona" max={4} />
     </PageLayout>
-  )
+  );
 }
 
 export default HomePage;

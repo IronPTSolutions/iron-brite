@@ -19,7 +19,7 @@ module.exports.create = (req, res, next) => {
           email: req.body.email,
           password: req.body.password,
           name: req.body.name,
-          avatar: req.body.avatar,
+          avatar: req.file?.path,
         }).then((user) => {
           sendValidationEmail(user);
 
