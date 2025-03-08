@@ -1,0 +1,30 @@
+# fly.toml app configuration file generated for api-proud-fog-1611 on 2025-03-08T13:59:48+01:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'api-proud-fog-1611'
+primary_region = 'mad'
+
+[env]
+  PORT = '3000'
+  CORS_ORIGINS='https://api-proud-fog-1611.fly.dev'
+  SESSION_SECURE = 'true'
+  APP_URL='https://api-proud-fog-1611.fly.dev'
+
+[build]
+[build.args]
+  VITE_BASE_API_URL = 'https://api-proud-fog-1611.fly.dev/api/v1'
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1

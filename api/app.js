@@ -21,6 +21,12 @@ app.use(loadSessionUser);
 const routes = require("./config/routes.config");
 app.use("/api/v1/", routes);
 
+// serve static files (React app)
+router.use(express.static(`${__dirname}/build`));
+router.use("/*", (req, res, next) =>
+  res.sendFile(`${__dirname}/build/index.html`)
+);
+
 const port = Number(process.env.PORT || 3000);
 
 app.listen(port, () => console.info(`Application running at port ${port}`));
