@@ -7,15 +7,19 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest"
   },
   "dependencies": {
+    "@testing-library/react": "^16.2.0",
     "axios": "^1.7.8",
     "dayjs": "^1.11.13",
+    "happy-dom": "^17.4.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.54.2",
-    "react-router-dom": "^7.0.1"
+    "react-router-dom": "^7.0.1",
+    "vitest": "^3.0.8"
   },
   "devDependencies": {
     "@eslint/js": "^9.15.0",

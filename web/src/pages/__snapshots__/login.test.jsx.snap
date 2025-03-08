@@ -1,0 +1,64 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<Login/> > happy case: render OK 1`] = `
+<body>
+  <div>
+    <div
+      class="container py-4"
+    >
+      <div>
+        <form
+          data-testid="login-form"
+        >
+          <div
+            class="input-group mb-1"
+          >
+            <span
+              class="input-group-text"
+            >
+              <i
+                class="fa fa-user fa-fw"
+              />
+            </span>
+            <input
+              class="form-control "
+              data-testid="email-input"
+              name="email"
+              placeholder="user@example.org"
+              type="email"
+            />
+          </div>
+          <div
+            class="input-group mb-2"
+          >
+            <span
+              class="input-group-text"
+            >
+              <i
+                class="fa fa-lock fa-fw"
+              />
+            </span>
+            <input
+              class="form-control  "
+              data-testid="password-input"
+              name="password"
+              placeholder="****"
+              type="password"
+            />
+          </div>
+          <div
+            class="d-grid"
+          >
+            <button
+              class="btn btn-primary"
+              type="submit"
+            >
+              Login
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+`;
